@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+ <metadata>
+  <id>$id$</id>
+  <title>$id$</title>
+  <version>$version$</version>
+  <authors>$author$</authors>
+  <description>$description$</description> 
+  <projectUrl>https://github.com/affecto/dotnet-Pdf.Toolkit</projectUrl>
+  <licenseUrl>http://www.gnu.org/licenses/agpl-3.0.html</licenseUrl>
+  <releaseNotes>First version</releaseNotes>
+ </metadata>
+</package>
