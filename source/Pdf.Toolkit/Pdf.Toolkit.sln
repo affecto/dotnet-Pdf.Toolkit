@@ -5,6 +5,13 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pdf.Toolkit", "Pdf.Toolkit\Pdf.Toolkit.csproj", "{CBBCA082-5FB4-4C27-8814-9B43A5FF056B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pdf.Toolkit.Tests", "Pdf.Toolkit.Tests\Pdf.Toolkit.Tests.csproj", "{E30F5827-E262-4979-AB56-8ED0EE8B0B59}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1A81A2F9-9AD7-4552-9DF4-58E80EBA0BB5}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\README.md = ..\..\README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +22,10 @@ Global
 		{CBBCA082-5FB4-4C27-8814-9B43A5FF056B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBBCA082-5FB4-4C27-8814-9B43A5FF056B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBBCA082-5FB4-4C27-8814-9B43A5FF056B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E30F5827-E262-4979-AB56-8ED0EE8B0B59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E30F5827-E262-4979-AB56-8ED0EE8B0B59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E30F5827-E262-4979-AB56-8ED0EE8B0B59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E30F5827-E262-4979-AB56-8ED0EE8B0B59}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
