@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Affecto.Pdf.Toolkit.Tests
 {
     [TestClass]
-    public class MergerTests
+    public class PdfMergerTests
     {
         const string MergedFile = "merged.pdf";
 
