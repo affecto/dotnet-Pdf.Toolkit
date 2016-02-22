@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Affecto.Pdf.Toolkit")]
-[assembly: AssemblyDescription("Tools for editing pdf files")]
+[assembly: AssemblyDescription("Tools for editing pdf files.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Affecto")]
 [assembly: AssemblyProduct("Affecto.Pdf.Toolkit")]
@@ -17,4 +17,4 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: AssemblyInformationalVersion("1.0.0-prerelease01")]
+[assembly: AssemblyInformationalVersion("1.0.0-prerelease02")]

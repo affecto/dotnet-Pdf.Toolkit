@@ -3,6 +3,10 @@
 Tools for editing pdf documents
 * Merging multiple documents
 * Reading properties from document (number of pages etc.)
+* Signing pdfs digitally
+
+Uses iTextSharp (https://github.com/itext/itextsharp)
+Affecto.Pdf.Toolkit is licensed as [AGPL][LICENSE] software.
 
 
 ## Build status
