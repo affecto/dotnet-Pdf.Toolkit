@@ -28,7 +28,14 @@
         /// </summary>
         public string TargetFilePath { get; set; }
 
-        public string AdditionalSignatureText { get; set; }
+        /// <summary>
+        /// Template for the signature that appears on the page. Values in format {id} will be replaced.
+        /// Available values:
+        ///  {firstname} : Signee's first name
+        ///  {lastname} : Signee's last name
+        ///  {signdate} : Date of the signature
+        /// </summary>
+        public string SignatureTemplate { get; set; }
 
         /// <param name="signatureName">Name of the signature field. Must be unique within the document!</param>
         public PdfSignatureParameters(string signatureName)
@@ -39,7 +46,7 @@
             SignatureRightMargin = DefaultRightMargin;
             SignaturePageNumber = DefaultPageNumber;
 
-            AdditionalSignatureText = string.Empty;
+            SignatureTemplate = string.Empty;
             SignatureName = signatureName;
         }
         

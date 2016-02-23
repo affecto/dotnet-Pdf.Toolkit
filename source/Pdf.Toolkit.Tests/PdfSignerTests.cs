@@ -7,7 +7,7 @@ namespace Affecto.Pdf.Toolkit.Tests
     public class PdfSignerTests
     {
         /// <summary>
-        /// This test can only be run locally when there is a valid digital signing certificate present (like: identity card + reader)
+        /// This test can only be run locally when there is a valid digital signing certificate present (like identity card + reader)
         /// </summary>
         [Ignore]
         [TestMethod]
@@ -18,7 +18,7 @@ namespace Affecto.Pdf.Toolkit.Tests
                     SignaturePageNumber = 1,
                     SignatureYLocation = 600,
                     SignatureHeight = 60,
-                    AdditionalSignatureText = "Signer",
+                    SignatureTemplate = "Signed by {firstname} {lastname}\non {signdate}",
                     TargetFilePath = @"C:\temp\signed.pdf",
                     SignatureLeftMargin = 50,
                     SignatureRightMargin = 50
