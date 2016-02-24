@@ -21,6 +21,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Affecto.Pdf.Toolkit.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="itextsharp, Version=5.5.8.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
@@ -45,11 +48,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CertificateHelper.cs" />
+    <Compile Include="Exceptions\DigitalSignatureCertificateNotFoundException.cs" />
     <Compile Include="Exceptions\PdfMergeFailedException.cs" />
     <Compile Include="Exceptions\ReadingPdfInfoFailedException.cs" />
     <Compile Include="PdfInfo.cs" />
     <Compile Include="PdfMerger.cs" />
+    <Compile Include="PdfSignatureParameters.cs" />
+    <Compile Include="PdfSigner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SigningCertificates.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
