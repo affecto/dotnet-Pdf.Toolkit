@@ -13,38 +13,69 @@ namespace Affecto.Pdf.Toolkit
     {       
         public static string SignFile(string fileName, PdfSignatureParameters parameters)
         {
-            if (string.IsNullOrWhiteSpace(fileName))
+            string tempPath = string.Empty;
+            try
             {
-                throw new ArgumentException("Filename must be given", nameof(fileName));
+                if (string.IsNullOrWhiteSpace(fileName))
+                {
+                    throw new ArgumentException("Filename must be given", nameof(fileName));
+                }
+                if (!File.Exists(fileName))
+                {
+                    throw new ArgumentException($"File {fileName} not found.");
+                }
+                if (parameters == null)
+                {
+                    throw new ArgumentNullException(nameof(parameters));
+                }
+
+                tempPath = GetTempPath(parameters.TempFolderPath);
+
+                string targetFilePath = GetTargetFilePath(parameters.TempFolderPath, parameters.TargetFilePath);
+
+                var signingCertificates = CertificateHelper.GetSigningCertificates();
+
+                OcspClientBouncyCastle oscpClient = new OcspClientBouncyCastle(null);
+                List<ICrlClient> clrClients = new List<ICrlClient> { new CrlClientOnline(signingCertificates.FinalChain) };
+
+                using (FileStream targetFileStream = new FileStream(targetFilePath, FileMode.Create))
+                using (PdfReader reader = new PdfReader(fileName))
+                {
+                    PdfStamper stamper = PdfStamper.CreateSignature(reader, targetFileStream, '0', tempPath, true);
+                    PdfSignatureAppearance appearance = GetPdfSignatureAppearance(signingCertificates, stamper, reader, parameters);
+
+                    CreateSignature(signingCertificates, appearance, clrClients, oscpClient);
+                }
+                
+                return targetFilePath;
             }
-            if (!File.Exists(fileName))
+            finally
             {
-                throw new ArgumentException($"File {fileName} not found.");
+                if (!string.IsNullOrWhiteSpace(tempPath) && File.Exists(tempPath))
+                {
+                    File.Delete(tempPath);
+                }
             }
-            if (parameters == null)
+        }
+
+        private static string GetTempPath(string tempFolderPath)
+        {
+            if (!string.IsNullOrWhiteSpace(tempFolderPath) && Directory.Exists(tempFolderPath))
             {
-                throw new ArgumentNullException(nameof(parameters));
+                 return Path.Combine(tempFolderPath, Path.GetRandomFileName());
             }
 
-            string tempPath = Path.GetTempFileName();
-            string targetFilePath = parameters.TargetFilePath ?? Path.GetTempFileName();
-            var signingCertificates = CertificateHelper.GetSigningCertificates();
+            return Path.GetTempFileName();
+        }
 
-            OcspClientBouncyCastle oscpClient = new OcspClientBouncyCastle(null);         
-            List<ICrlClient> clrClients = new List<ICrlClient> { new CrlClientOnline(signingCertificates.FinalChain) };
-
-            using (FileStream targetFileStream = new FileStream(targetFilePath, FileMode.Create))
-            using (PdfReader reader = new PdfReader(fileName))
+        private static string GetTargetFilePath(string tempFolderPath, string targetFilePath)
+        {
+            if (!string.IsNullOrWhiteSpace(tempFolderPath) && Directory.Exists(tempFolderPath))
             {
-                PdfStamper stamper = PdfStamper.CreateSignature(reader, targetFileStream, '0', tempPath, true);
-                PdfSignatureAppearance appearance = GetPdfSignatureAppearance(signingCertificates, stamper, reader, parameters);
-
-                CreateSignature(signingCertificates, appearance, clrClients, oscpClient);
+                return targetFilePath ?? Path.Combine(tempFolderPath, Path.GetRandomFileName());
             }
 
-            File.Delete(tempPath);
-
-            return targetFilePath;           
+            return targetFilePath ?? Path.GetTempFileName();
         }
 
         private static void CreateSignature(SigningCertificates signingCertificates, PdfSignatureAppearance signatureAppearance, ICollection<ICrlClient> clrClients, IOcspClient oscpClient)

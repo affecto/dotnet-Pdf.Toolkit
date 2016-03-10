@@ -37,6 +37,11 @@
         /// </summary>
         public string SignatureTemplate { get; set; }
 
+        /// <summary>
+        /// Temporary folder to use in signing process.
+        /// </summary>
+        public string TempFolderPath { get; set; }
+
         /// <param name="signatureName">Name of the signature field. Must be unique within the document!</param>
         public PdfSignatureParameters(string signatureName)
         {
