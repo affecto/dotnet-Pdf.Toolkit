@@ -53,7 +53,7 @@ namespace Affecto.Pdf.Toolkit
 
         private static X509Certificate2Collection FindDigitalSignatureCertificates(X509Store x509Store)
         {
-            return x509Store.Certificates.Find(X509FindType.FindByKeyUsage, "digitalSignature", true);
+            return x509Store.Certificates.Find(X509FindType.FindByKeyUsage, "nonRepudiation", true);
         }
 
         private static X509Certificate2 GetX509Certificate2(X509Certificate2Collection validCertificates)
