@@ -120,8 +120,8 @@ namespace Affecto.Pdf.Toolkit
             string signDate = DateTime.Now.ToString("d.M.yyyy");
 
             return parameters.SignatureTemplate
-                .Replace("{lastname}", surName)
-                .Replace("{firstname}", givenName)
+                .Replace("{lastname}", UppercaseFirst(surName))
+                .Replace("{firstname}", UppercaseFirst(givenName))
                 .Replace("{signdate}", signDate);
         }
 
