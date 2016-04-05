@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Affecto.Pdf.Toolkit.Interfaces;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.security;
@@ -9,32 +10,44 @@ using X509Certificate = Org.BouncyCastle.X509.X509Certificate;
 
 namespace Affecto.Pdf.Toolkit
 {
+    /*
+    * For more information on pdf signatures see "Digital Signatures for PDF documents" in http://developers.itextpdf.com/books
+    */
+
     public static class PdfSigner
     {       
-        public static string SignFile(string fileName, PdfSignatureParameters parameters)
+        public static string SignFile(string fileName, PdfSignatureParameters parameters, IDigitalSignatureCertificateSelector certificateSelector)
         {
+            if (string.IsNullOrWhiteSpace(fileName))
+            {
+                throw new ArgumentException("Filename must be given", nameof(fileName));
+            }
+            if (!File.Exists(fileName))
+            {
+                throw new ArgumentException($"File {fileName} not found.");
+            }
+            if (parameters == null)
+            {
+                throw new ArgumentNullException(nameof(parameters));
+            }
+            if (certificateSelector == null)
+            {
+                throw new ArgumentNullException(nameof(certificateSelector));
+            }
+
             string tempPath = string.Empty;
             try
             {
-                if (string.IsNullOrWhiteSpace(fileName))
-                {
-                    throw new ArgumentException("Filename must be given", nameof(fileName));
-                }
-                if (!File.Exists(fileName))
-                {
-                    throw new ArgumentException($"File {fileName} not found.");
-                }
-                if (parameters == null)
-                {
-                    throw new ArgumentNullException(nameof(parameters));
-                }
-
                 tempPath = GetTempPath(parameters.TempFolderPath);
 
                 string targetFilePath = GetTargetFilePath(parameters.TempFolderPath, parameters.TargetFilePath);
 
-                var signingCertificates = CertificateHelper.GetSigningCertificates();
+                var signingCertificates = CertificateHelper.GetSigningCertificates(certificateSelector);
 
+                // Two clients for checking certificate revocation
+                // * Online Certificate Status Protocol (OCSP) client
+                // * Certificate Revocation Lists (CRL) client with online checking
+                // Certificate will be checked when the signature is made
                 OcspClientBouncyCastle oscpClient = new OcspClientBouncyCastle(null);
                 List<ICrlClient> clrClients = new List<ICrlClient> { new CrlClientOnline(signingCertificates.FinalChain) };
 
