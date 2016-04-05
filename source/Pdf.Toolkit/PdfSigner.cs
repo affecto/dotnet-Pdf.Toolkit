@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Affecto.Pdf.Toolkit.Interfaces;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.security;
@@ -15,29 +16,33 @@ namespace Affecto.Pdf.Toolkit
 
     public static class PdfSigner
     {       
-        public static string SignFile(string fileName, PdfSignatureParameters parameters)
+        public static string SignFile(string fileName, PdfSignatureParameters parameters, IDigitalSignatureCertificateSelector certificateSelector)
         {
+            if (string.IsNullOrWhiteSpace(fileName))
+            {
+                throw new ArgumentException("Filename must be given", nameof(fileName));
+            }
+            if (!File.Exists(fileName))
+            {
+                throw new ArgumentException($"File {fileName} not found.");
+            }
+            if (parameters == null)
+            {
+                throw new ArgumentNullException(nameof(parameters));
+            }
+            if (certificateSelector == null)
+            {
+                throw new ArgumentNullException(nameof(certificateSelector));
+            }
+
             string tempPath = string.Empty;
             try
             {
-                if (string.IsNullOrWhiteSpace(fileName))
-                {
-                    throw new ArgumentException("Filename must be given", nameof(fileName));
-                }
-                if (!File.Exists(fileName))
-                {
-                    throw new ArgumentException($"File {fileName} not found.");
-                }
-                if (parameters == null)
-                {
-                    throw new ArgumentNullException(nameof(parameters));
-                }
-
                 tempPath = GetTempPath(parameters.TempFolderPath);
 
                 string targetFilePath = GetTargetFilePath(parameters.TempFolderPath, parameters.TargetFilePath);
 
-                var signingCertificates = CertificateHelper.GetSigningCertificates();
+                var signingCertificates = CertificateHelper.GetSigningCertificates(certificateSelector);
 
                 // Two clients for checking certificate revocation
                 // * Online Certificate Status Protocol (OCSP) client
