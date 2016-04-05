@@ -8,7 +8,7 @@
   <description>$description$</description> 
   <projectUrl>https://github.com/affecto/dotnet-Pdf.Toolkit</projectUrl>
   <licenseUrl>http://www.gnu.org/licenses/agpl-3.0.html</licenseUrl>
-  <releaseNotes>Use nonRepudiation certificate in signing.</releaseNotes>
+  <releaseNotes>Digital signing certificate selection moved to caller</releaseNotes>
   <requireLicenseAcceptance>true</requireLicenseAcceptance>
  </metadata>
 </package>
