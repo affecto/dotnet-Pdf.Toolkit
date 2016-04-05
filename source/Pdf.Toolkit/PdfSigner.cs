@@ -133,9 +133,18 @@ namespace Affecto.Pdf.Toolkit
             string signDate = DateTime.Now.ToString("d.M.yyyy");
 
             return parameters.SignatureTemplate
-                .Replace("{lastname}", surName)
-                .Replace("{firstname}", givenName)
+                .Replace("{lastname}", UppercaseFirst(surName))
+                .Replace("{firstname}", UppercaseFirst(givenName))
                 .Replace("{signdate}", signDate);
+        }
+
+        private static string UppercaseFirst(string s)
+        {
+            if (string.IsNullOrEmpty(s))
+            {
+                return string.Empty;
+            }
+            return char.ToUpper(s[0]) + s.Substring(1).ToLower();
         }
     }
 }
