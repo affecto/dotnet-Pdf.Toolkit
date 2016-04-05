@@ -9,6 +9,10 @@ using X509Certificate = Org.BouncyCastle.X509.X509Certificate;
 
 namespace Affecto.Pdf.Toolkit
 {
+    /*
+    * For more information on pdf signatures see "Digital Signatures for PDF documents" in http://developers.itextpdf.com/books
+    */
+
     public static class PdfSigner
     {       
         public static string SignFile(string fileName, PdfSignatureParameters parameters)
@@ -35,6 +39,10 @@ namespace Affecto.Pdf.Toolkit
 
                 var signingCertificates = CertificateHelper.GetSigningCertificates();
 
+                // Two clients for checking certificate revocation
+                // * Online Certificate Status Protocol (OCSP) client
+                // * Certificate Revocation Lists (CRL) client with online checking
+                // Certificate will be checked when the signature is made
                 OcspClientBouncyCastle oscpClient = new OcspClientBouncyCastle(null);
                 List<ICrlClient> clrClients = new List<ICrlClient> { new CrlClientOnline(signingCertificates.FinalChain) };
 
@@ -123,15 +131,6 @@ namespace Affecto.Pdf.Toolkit
                 .Replace("{lastname}", surName)
                 .Replace("{firstname}", givenName)
                 .Replace("{signdate}", signDate);
-        }
-
-        private static string UppercaseFirst(string s)
-        {
-            if (string.IsNullOrEmpty(s))
-            {
-                return string.Empty;
-            }
-            return char.ToUpper(s[0]) + s.Substring(1).ToLower();
         }
     }
 }
