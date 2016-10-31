@@ -109,7 +109,7 @@ namespace Affecto.Pdf.Toolkit
             appearance.Layer2Text = GetSignatureText(signingCertificates.X509Certificate, parameters);
             appearance.Acro6Layers = true;
 
-            Rectangle cropBox = reader.GetCropBox(1);
+            Rectangle cropBox = reader.GetCropBox(parameters.SignaturePageNumber);
 
             Rectangle rectangle = GetSignatureLocation(cropBox, parameters);
             appearance.SetVisibleSignature(rectangle, parameters.SignaturePageNumber, parameters.SignatureName);
