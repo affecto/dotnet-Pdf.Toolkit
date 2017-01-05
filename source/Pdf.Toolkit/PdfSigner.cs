@@ -15,7 +15,7 @@ namespace Affecto.Pdf.Toolkit
     */
 
     public static class PdfSigner
-    {       
+    {
         public static string SignFile(string fileName, PdfSignatureParameters parameters, IDigitalSignatureCertificateSelector certificateSelector)
         {
             if (string.IsNullOrWhiteSpace(fileName))
@@ -53,20 +53,27 @@ namespace Affecto.Pdf.Toolkit
 
                 using (FileStream targetFileStream = new FileStream(targetFilePath, FileMode.Create))
                 using (PdfReader reader = new PdfReader(fileName))
+                using (PdfStamper stamper = PdfStamper.CreateSignature(reader, targetFileStream, '0', tempPath, true))
                 {
-                    PdfStamper stamper = PdfStamper.CreateSignature(reader, targetFileStream, '0', tempPath, true);
                     PdfSignatureAppearance appearance = GetPdfSignatureAppearance(signingCertificates, stamper, reader, parameters);
 
                     CreateSignature(signingCertificates, appearance, clrClients, oscpClient);
                 }
-                
+
                 return targetFilePath;
             }
             finally
             {
-                if (!string.IsNullOrWhiteSpace(tempPath) && File.Exists(tempPath))
+                try
                 {
-                    File.Delete(tempPath);
+                    if (!string.IsNullOrWhiteSpace(tempPath) && File.Exists(tempPath))
+                    {
+                        File.Delete(tempPath);
+                    }
+                }
+                catch (Exception)
+                {
+                    
                 }
             }
         }
