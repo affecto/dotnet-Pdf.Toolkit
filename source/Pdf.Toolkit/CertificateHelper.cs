@@ -22,7 +22,7 @@ namespace Affecto.Pdf.Toolkit
 
             signingCertificates.X509Certificate2 = certificateSelector.SelectCertificate(validCertificates.Cast<X509Certificate2>());
             signingCertificates.X509Certificate = parser.ReadCertificate(signingCertificates.X509Certificate2.Export(X509ContentType.Cert));
-            signingCertificates.FinalChain = CreateChain(signingCertificates.X509Certificate, signingCertificates.X509Certificate2, parser);            
+            signingCertificates.FinalChain = CreateChain(signingCertificates.X509Certificate, signingCertificates.X509Certificate2, parser);
 
             return signingCertificates;
         }
@@ -35,17 +35,23 @@ namespace Affecto.Pdf.Toolkit
             string[] issuerFields = issuer.Split(',');
             foreach (string field in issuerFields)
             {
-                string[] fieldSplit = field.Split('=');
-                string key = fieldSplit[0].Trim();
-                string value = fieldSplit[1].Trim();
+                if (field.Contains("="))
+                {
+                    string[] fieldSplit = field.Split('=');
+                    if (fieldSplit[0] != null && fieldSplit[1] != null)
+                    {
+                        string key = fieldSplit[0].Trim();
+                        string value = fieldSplit[1].Trim();
 
-                if (!fields.Keys.Contains(key))
-                {
-                    fields.Add(key, value);
-                }
-                else
-                {
-                    fields[key] = value;
+                        if (!fields.Keys.Contains(key))
+                        {
+                            fields.Add(key, value);
+                        }
+                        else
+                        {
+                            fields[key] = value;
+                        }
+                    }
                 }
             }
 
