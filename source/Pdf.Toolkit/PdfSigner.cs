@@ -55,8 +55,8 @@ namespace Affecto.Pdf.Toolkit
                 using (PdfReader reader = new PdfReader(fileName))
                 using (PdfStamper stamper = PdfStamper.CreateSignature(reader, targetFileStream, '0', tempPath, true))
                 {
+                    stamper.Writer.SetPdfVersion(PdfWriter.PDF_VERSION_1_7);
                     PdfSignatureAppearance appearance = GetPdfSignatureAppearance(signingCertificates, stamper, reader, parameters);
-
                     CreateSignature(signingCertificates, appearance, clrClients, oscpClient);
                 }
 
@@ -100,7 +100,7 @@ namespace Affecto.Pdf.Toolkit
 
         private static void CreateSignature(SigningCertificates signingCertificates, PdfSignatureAppearance signatureAppearance, ICollection<ICrlClient> clrClients, IOcspClient oscpClient)
         {
-            IExternalSignature externalSignature = new X509Certificate2Signature(signingCertificates.X509Certificate2, "SHA-1");
+            IExternalSignature externalSignature = new X509Certificate2Signature(signingCertificates.X509Certificate2, "SHA-512");
 
             MakeSignature.SignDetached(signatureAppearance, externalSignature, signingCertificates.FinalChain, clrClients, oscpClient, null, 0, CryptoStandard.CMS);
         }
