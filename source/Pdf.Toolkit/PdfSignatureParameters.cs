@@ -42,8 +42,14 @@
         /// </summary>
         public string TempFolderPath { get; set; }
 
+        /// <summary>
+        /// SHA-1, SHA-256 OR SHA-512
+        /// </summary>
+        public EncryptionType SelectedEncryptionType { get; set; }
+
         /// <param name="signatureName">Name of the signature field. Must be unique within the document!</param>
-        public PdfSignatureParameters(string signatureName)
+        /// <param name="encryptionType"></param>
+        public PdfSignatureParameters(string signatureName, EncryptionType encryptionType)
         {
             SignatureYLocation = DefaultYLocation;
             SignatureHeight = DefaultHeight;
@@ -53,6 +59,7 @@
 
             SignatureTemplate = string.Empty;
             SignatureName = signatureName;
+            SelectedEncryptionType = encryptionType;
         }
         
     }

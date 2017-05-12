@@ -13,7 +13,6 @@ namespace Affecto.Pdf.Toolkit
     /*
     * For more information on pdf signatures see "Digital Signatures for PDF documents" in http://developers.itextpdf.com/books
     */
-
     public static class PdfSigner
     {
         public static string SignFile(string fileName, PdfSignatureParameters parameters, IDigitalSignatureCertificateSelector certificateSelector)
@@ -55,9 +54,9 @@ namespace Affecto.Pdf.Toolkit
                 using (PdfReader reader = new PdfReader(fileName))
                 using (PdfStamper stamper = PdfStamper.CreateSignature(reader, targetFileStream, '0', tempPath, true))
                 {
-                    stamper.Writer.SetPdfVersion(PdfWriter.PDF_VERSION_1_7);
+                    SetPdfVersion(stamper, parameters.SelectedEncryptionType);
                     PdfSignatureAppearance appearance = GetPdfSignatureAppearance(signingCertificates, stamper, reader, parameters);
-                    CreateSignature(signingCertificates, appearance, clrClients, oscpClient);
+                    CreateSignature(signingCertificates, appearance, clrClients, oscpClient, parameters.SelectedEncryptionType);
                 }
 
                 return targetFilePath;
@@ -75,6 +74,14 @@ namespace Affecto.Pdf.Toolkit
                 {
                     
                 }
+            }
+        }
+
+        private static void SetPdfVersion(PdfStamper stamper, EncryptionType encryptionType)
+        {
+            if (encryptionType != EncryptionType.Sha1)
+            {
+                stamper.Writer.SetPdfVersion(PdfWriter.PDF_VERSION_1_7);
             }
         }
 
@@ -98,11 +105,26 @@ namespace Affecto.Pdf.Toolkit
             return targetFilePath ?? Path.GetTempFileName();
         }
 
-        private static void CreateSignature(SigningCertificates signingCertificates, PdfSignatureAppearance signatureAppearance, ICollection<ICrlClient> clrClients, IOcspClient oscpClient)
+        private static void CreateSignature(SigningCertificates signingCertificates, PdfSignatureAppearance signatureAppearance, ICollection<ICrlClient> clrClients, IOcspClient oscpClient, EncryptionType encryptionType)
         {
-            IExternalSignature externalSignature = new X509Certificate2Signature(signingCertificates.X509Certificate2, "SHA-512");
+            IExternalSignature externalSignature = new X509Certificate2Signature(signingCertificates.X509Certificate2, GetEncryptionType(encryptionType));
 
             MakeSignature.SignDetached(signatureAppearance, externalSignature, signingCertificates.FinalChain, clrClients, oscpClient, null, 0, CryptoStandard.CMS);
+        }
+
+        private static string GetEncryptionType(EncryptionType encryption)
+        {
+            switch (encryption)
+            {
+                case EncryptionType.Sha1:
+                    return "SHA-1";
+                case EncryptionType.Sha256:
+                    return "SHA-256";
+                case EncryptionType.Sha512:
+                    return "SHA-512";
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(encryption), encryption, null);
+            }
         }
 
         private static PdfSignatureAppearance GetPdfSignatureAppearance(SigningCertificates signingCertificates, PdfStamper stamper, PdfReader reader, PdfSignatureParameters parameters)

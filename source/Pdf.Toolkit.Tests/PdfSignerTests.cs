@@ -25,7 +25,7 @@ namespace Affecto.Pdf.Toolkit.Tests
         [TestMethod]
         public void SignFile()
         {
-            PdfSigner.SignFile(@"Resources\A4 Test Page.pdf", new PdfSignatureParameters("Digital Signature Test")
+            PdfSigner.SignFile(@"Resources\A4 Test Page.pdf", new PdfSignatureParameters("Digital Signature Test", EncryptionType.Sha256)
                 {
                     SignaturePageNumber = 1,
                     SignatureYLocation = 600,
@@ -42,7 +42,7 @@ namespace Affecto.Pdf.Toolkit.Tests
         [ExpectedException(typeof(ArgumentException))]
         public void SignFile_SourceFileNameNotGiven_Throws()
         {
-            PdfSigner.SignFile("", new PdfSignatureParameters("Digital Signature Test"), certificateSelector);
+            PdfSigner.SignFile("", new PdfSignatureParameters("Digital Signature Test", EncryptionType.Sha256), certificateSelector);
         }
 
         [TestMethod]
@@ -56,14 +56,14 @@ namespace Affecto.Pdf.Toolkit.Tests
         [ExpectedException(typeof(ArgumentException))]
         public void SignFile_SourceFileDoesNotExist_Throws()
         {
-            PdfSigner.SignFile("foo", new PdfSignatureParameters("Digital Signature Test"), certificateSelector);
+            PdfSigner.SignFile("foo", new PdfSignatureParameters("Digital Signature Test", EncryptionType.Sha256), certificateSelector);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void SignFile_CertificateSelectorNotGiven_Throws()
         {
-            PdfSigner.SignFile(@"Resources\A4 Test Page.pdf", new PdfSignatureParameters("Digital Signature Test"), null);
+            PdfSigner.SignFile(@"Resources\A4 Test Page.pdf", new PdfSignatureParameters("Digital Signature Test", EncryptionType.Sha256), null);
         }
 
         private class FirstCertificateSelector : IDigitalSignatureCertificateSelector

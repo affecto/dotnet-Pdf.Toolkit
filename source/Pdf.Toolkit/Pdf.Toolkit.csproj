@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CertificateHelper.cs" />
+    <Compile Include="EncryptionType.cs" />
     <Compile Include="Exceptions\DigitalSignatureCertificateNotFoundException.cs" />
     <Compile Include="Exceptions\PdfMergeFailedException.cs" />
     <Compile Include="Exceptions\ReadingPdfInfoFailedException.cs" />
