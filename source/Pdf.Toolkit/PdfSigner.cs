@@ -161,9 +161,15 @@ namespace Affecto.Pdf.Toolkit
             string givenName = subjectFields.Keys.Contains("GIVENNAME") ? subjectFields["GIVENNAME"] : string.Empty;
             string signDate = DateTime.Now.ToString("d.M.yyyy");
 
+            if (parameters.FormatSignerName)
+            {
+                surName = UppercaseFirst(surName);
+                givenName = UppercaseFirst(givenName);
+            }
+
             return parameters.SignatureTemplate
-                .Replace("{lastname}", UppercaseFirst(surName))
-                .Replace("{firstname}", UppercaseFirst(givenName))
+                .Replace("{lastname}", surName)
+                .Replace("{firstname}", givenName)
                 .Replace("{signdate}", signDate);
         }
 
