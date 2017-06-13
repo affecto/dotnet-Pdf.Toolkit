@@ -47,9 +47,14 @@
         /// </summary>
         public EncryptionType SelectedEncryptionType { get; set; }
 
+        /// <summary>
+        /// Should signers name be formatted (Capitalize first letters)
+        /// </summary>
+        public bool FormatSignerName { get; set; }
+
         /// <param name="signatureName">Name of the signature field. Must be unique within the document!</param>
         /// <param name="encryptionType"></param>
-        public PdfSignatureParameters(string signatureName, EncryptionType encryptionType)
+        public PdfSignatureParameters(string signatureName, EncryptionType encryptionType, bool formatSignerName = true)
         {
             SignatureYLocation = DefaultYLocation;
             SignatureHeight = DefaultHeight;
@@ -60,6 +65,7 @@
             SignatureTemplate = string.Empty;
             SignatureName = signatureName;
             SelectedEncryptionType = encryptionType;
+            FormatSignerName = formatSignerName;
         }
         
     }
