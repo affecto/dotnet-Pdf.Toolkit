@@ -1,4 +1,6 @@
-﻿namespace Affecto.Pdf.Toolkit
+﻿using System.Collections.Generic;
+
+namespace Affecto.Pdf.Toolkit
 {
     public class PdfSignatureParameters
     {
@@ -52,9 +54,22 @@
         /// </summary>
         public bool FormatSignerName { get; set; }
 
+        /// <summary>
+        /// Use OCSP validation instead of CRL
+        /// </summary>
+        public bool UseOcsp { get; set; }
+
+        /// <summary>
+        /// OCSP URLs for validation
+        /// </summary>
+        public List<string> OcspUrls { get; set; }
+
         /// <param name="signatureName">Name of the signature field. Must be unique within the document!</param>
         /// <param name="encryptionType"></param>
-        public PdfSignatureParameters(string signatureName, EncryptionType encryptionType, bool formatSignerName = true)
+        /// <param name="formatSignerName"></param>
+        /// <param name="useOcsp"></param>
+        /// <param name="ocspUrls"></param>
+        public PdfSignatureParameters(string signatureName, EncryptionType encryptionType, bool formatSignerName = true, bool useOcsp = false, List<string> ocspUrls = null)
         {
             SignatureYLocation = DefaultYLocation;
             SignatureHeight = DefaultHeight;
@@ -66,6 +81,9 @@
             SignatureName = signatureName;
             SelectedEncryptionType = encryptionType;
             FormatSignerName = formatSignerName;
+
+            UseOcsp = useOcsp;
+            OcspUrls = ocspUrls;
         }
         
     }

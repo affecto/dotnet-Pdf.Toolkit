@@ -54,6 +54,7 @@
     <Compile Include="Exceptions\PdfMergeFailedException.cs" />
     <Compile Include="Exceptions\ReadingPdfInfoFailedException.cs" />
     <Compile Include="Interfaces\IDigitalSignatureCertificateSelector.cs" />
+    <Compile Include="MyOcspClientBouncyCastle.cs" />
     <Compile Include="PdfInfo.cs" />
     <Compile Include="PdfMerger.cs" />
     <Compile Include="PdfSignatureParameters.cs" />
