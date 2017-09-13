@@ -48,13 +48,16 @@ namespace Affecto.Pdf.Toolkit
                 // * Certificate Revocation Lists (CRL) client with online checking
                 // Certificate will be checked when the signature is made
                 MyOcspClientBouncyCastle ocspClient = null;
+                List<ICrlClient> crlClients = null;
                 if (parameters.UseOcsp)
                 {
                     OcspVerifier ocspVerifier = new OcspVerifier(null, null);
                     ocspClient = new MyOcspClientBouncyCastle(ocspVerifier, parameters.OcspUrls);
                 }
-
-                List<ICrlClient> clrClients = new List<ICrlClient> { new CrlClientOnline(signingCertificates.FinalChain) };
+                else
+                {
+                    crlClients = new List<ICrlClient> { new CrlClientOnline(signingCertificates.FinalChain) };
+                }
 
                 using (FileStream targetFileStream = new FileStream(targetFilePath, FileMode.Create))
                 using (PdfReader reader = new PdfReader(fileName))
@@ -62,7 +65,7 @@ namespace Affecto.Pdf.Toolkit
                 {
                     SetPdfVersion(stamper, parameters.SelectedEncryptionType);
                     PdfSignatureAppearance appearance = GetPdfSignatureAppearance(signingCertificates, stamper, reader, parameters);
-                    CreateSignature(signingCertificates, appearance, clrClients, ocspClient, parameters.SelectedEncryptionType);
+                    CreateSignature(signingCertificates, appearance, crlClients, ocspClient, parameters.SelectedEncryptionType);
                 }
 
                 return targetFilePath;
